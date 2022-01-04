@@ -1,0 +1,15 @@
+.cell{
+    width: 25px;
+    height: 25px;
+    display: inline-block;
+    border: 1px solid green;
+}
+.board{
+    border: 1px solid green;
+}
+.row{
+    height: 25px;
+}
+.snake{
+    background-color: black;
+}
