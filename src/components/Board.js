@@ -104,12 +104,12 @@ const Board=()=>{
          { startGame && <h1 style={{margin : 0, padding : 0}} >Score: {score}</h1>}
      
      <div className={styles.board}>
-         {board.map(eachRow=>{
+         {board.map((eachRow,rowInd)=>{
              return(
-                <div className={styles.row}>
-                    {eachRow.map(eachCell=>{
+                <div key={rowInd} className={styles.row}>
+                    {eachRow.map((eachCell,cellInd)=>{
                         return(
-                            <div className={`${styles.cell} ${snakeCells.includes(eachCell) ? styles.snake : ""} ${eachCell === foodCell ? styles.food : ""}`}/>
+                            <div key={cellInd} className={`${styles.cell} ${snakeCells.includes(eachCell) ? styles.snake : ""} ${eachCell === foodCell ? styles.food : ""}`}/>
                         )
                     })}
                 </div>
@@ -118,13 +118,13 @@ const Board=()=>{
 
      </div>
      <div className={styles.mobileBtn}>
-         <button className={styles.btnUp} onClick={()=>HandleKeydown({key : "ArrowUp"})}><i class="fas fa-arrow-up"></i></button>
+         <button className={styles.btnUp} onClick={()=>HandleKeydown({key : "ArrowUp"})}><i className="fas fa-arrow-up"></i></button>
          <div className={styles.btnGroup}>
-            <button className={styles.btnLeft} onClick={()=>HandleKeydown({key : "ArrowLeft"})}><i class="fas fa-arrow-left"></i></button>
-            <button className={styles.btnRight} onClick={()=>HandleKeydown({key : "ArrowRight"})}><i class="fas fa-arrow-right"></i></button>
+            <button className={styles.btnLeft} onClick={()=>HandleKeydown({key : "ArrowLeft"})}><i className="fas fa-arrow-left"></i></button>
+            <button className={styles.btnRight} onClick={()=>HandleKeydown({key : "ArrowRight"})}><i className="fas fa-arrow-right"></i></button>
 
          </div>
-         <button onClick={()=>HandleKeydown({key : "ArrowDown"})} className={styles.btnDown}><i class="fas fa-arrow-down"></i></button>
+         <button onClick={()=>HandleKeydown({key : "ArrowDown"})} className={styles.btnDown}><i className="fas fa-arrow-down"></i></button>
      </div>
      </>
  )
