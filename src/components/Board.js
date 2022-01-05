@@ -7,7 +7,7 @@ const Board=()=>{
     const [board,setBoard]=useState(CreateBoard(BOARD_SIZE));
     const [snakeCells,setSnakeCells]=useState([44,45,46]);
     const [direction,setDirection]=useState("Right");
-    const [foodCell,setFoodCell]=useState(null);
+    const [foodCell,setFoodCell]=useState(288);
     const [startGame,setStartGame]=useState(false);
     const [endGame,setEndGame]=useState(false);
     const [score,setScore]=useState(0);
