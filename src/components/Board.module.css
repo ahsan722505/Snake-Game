@@ -14,5 +14,47 @@
     background-color: black;
 }
 .food{
-    background-color: yellow;
+    background-color: brown;
+}
+.mobileBtn{
+    margin-top: 1rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    
+}
+.btnUp{
+    margin-bottom: .5rem;
+}
+.btnDown{
+    margin-top: .5rem;
+}
+.btnLeft{
+    transform: translateX(-50%);
+}
+.btnRight{
+    transform: translateX(50%);
+}
+.btnUp,.btnLeft,.btnDown,.btnRight{
+    padding: .6rem .9rem;
+}
+@media (min-width : 700px) {
+    .mobileBtn{
+        display: none;
+    }
+}
+
+@media (max-width : 550px) {
+    .cell{
+        width: 17px;
+        height: 17px;
+    }
+    .row{
+        height: 17px;
+    }
+    .board{
+        border: none;
+    }
+    
 }

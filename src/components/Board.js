@@ -87,7 +87,6 @@ const Board=()=>{
         let food;
         while(true){
             food=generateRandom(0,399);
-            console.log(food);
             if(!snakeCells.includes(food)) break;
         }
         setFoodCell(food);
@@ -96,12 +95,12 @@ const Board=()=>{
         if(endGame) return;
         if(!startGame) return;
         GenerateFood();
-    },5000);
+    },4000);
 
  return(
      <>
          { !startGame && <button style={{marginBottom : "1rem"}} onClick={()=> setStartGame(true)}>Start Game</button>}
-         {endGame && <h1 style={{margin : 0, padding : 0}}>You lose! Reload to play again</h1>}
+         {endGame && <h1 style={{margin : 0, padding : 0 , textAlign : "center"}}>You lose! Reload to play again</h1>}
          { startGame && <h1 style={{margin : 0, padding : 0}} >Score: {score}</h1>}
      
      <div className={styles.board}>
@@ -117,6 +116,15 @@ const Board=()=>{
              )
          })}
 
+     </div>
+     <div className={styles.mobileBtn}>
+         <button className={styles.btnUp} onClick={()=>HandleKeydown({key : "ArrowUp"})}><i class="fas fa-arrow-up"></i></button>
+         <div className={styles.btnGroup}>
+            <button className={styles.btnLeft} onClick={()=>HandleKeydown({key : "ArrowLeft"})}><i class="fas fa-arrow-left"></i></button>
+            <button className={styles.btnRight} onClick={()=>HandleKeydown({key : "ArrowRight"})}><i class="fas fa-arrow-right"></i></button>
+
+         </div>
+         <button onClick={()=>HandleKeydown({key : "ArrowDown"})} className={styles.btnDown}><i class="fas fa-arrow-down"></i></button>
      </div>
      </>
  )
