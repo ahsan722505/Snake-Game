@@ -1,3 +1,4 @@
+import React, { useState, useEffect, useRef } from 'react';
 export const CreateBoard=(BOARD_SIZE)=>{
     let board=[];
     let currentRow=[];
@@ -78,3 +79,76 @@ export const GetHead=(lastElement,Direction)=>{
 
 
 }
+export const generateRandom=(min = 0, max = 100)=> {
+
+    // find diff
+    let difference = max - min;
+
+    // generate random number 
+    let rand = Math.random();
+
+    // multiply with difference 
+    rand = Math.floor( rand * difference);
+
+    // add with min value 
+    rand = rand + min;
+
+    return rand;
+}
+
+export function useInterval(callback, delay) {
+  const savedCallback = useRef();
+
+  // Remember the latest callback.
+  useEffect(() => {
+    savedCallback.current = callback;
+  }, [callback]);
+
+  // Set up the interval.
+  useEffect(() => {
+    function tick() {
+      savedCallback.current();
+    }
+    if (delay !== null) {
+      let id = setInterval(tick, delay);
+      return () => clearInterval(id);
+    }
+  }, [delay]);
+}
+export const GetTail=(firstElement,direction)=>{
+    if(direction === "Right"){
+        if(firstElement % 10 === 0 && IsDigitEven(firstElement)){
+                return firstElement +20;
+        }else{
+
+            return firstElement -1;
+        }
+    }
+    if(direction === "Left"){
+        if((firstElement+1)%10 === 0 && IsDigitOdd(firstElement)){
+            return firstElement -20;
+        }else{
+            
+            return firstElement +1;
+        }
+    }
+    if(direction === "Up"){
+        if(firstElement >=380 && firstElement <=399 ){
+            return firstElement - 380;
+        }else{
+
+            return firstElement +20;
+        }
+    }
+    if(direction === "Down"){
+        if(firstElement >=0 && firstElement <=19){
+            return firstElement + 380;
+    }else{
+        
+        return firstElement -20;
+    }
+    }
+
+}
+
+
