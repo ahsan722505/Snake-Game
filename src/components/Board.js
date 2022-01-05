@@ -9,8 +9,18 @@ const Board=()=>{
     const [direction,setDirection]=useState("Right");
     const [foodCell,setFoodCell]=useState(null);
     const [startGame,setStartGame]=useState(false);
+    const [endGame,setEndGame]=useState(false);
     const [score,setScore]=useState(0);
     (function () {
+        // checking if player has lose
+        if(!startGame) return;
+        if(endGame) return;
+        let tempCells=[...snakeCells];
+        let head=tempCells.pop();
+        if(tempCells.find(each=> each === head)) setEndGame(true);
+      })();
+    (function () {
+        if(endGame) return;
         if(!startGame) return;
         // checking if snake has consumed food
         if(snakeCells.slice(-1)[0] === foodCell){
@@ -25,6 +35,7 @@ const Board=()=>{
         }
       })();
     const HandleKeydown=(e)=>{
+        if(endGame) return;
         switch (e.key) {
             case "ArrowUp":
                 if(!startGame) break;
@@ -67,6 +78,7 @@ const Board=()=>{
         setSnakeCells(tempCells);
     }
     useInterval(()=>{
+        if(endGame) return;
         if(!startGame) return;
         SnakeFlow();
     },100)
@@ -81,17 +93,16 @@ const Board=()=>{
         setFoodCell(food);
     }
     useInterval(()=>{
+        if(endGame) return;
         if(!startGame) return;
         GenerateFood();
     },5000);
 
-
-    
-    
  return(
      <>
          { !startGame && <button style={{marginBottom : "1rem"}} onClick={()=> setStartGame(true)}>Start Game</button>}
-         { startGame && <h1 style={{marginBottom : "1rem"}}>Score: {score}</h1>}
+         {endGame && <h1 style={{margin : 0, padding : 0}}>You lose! Reload to play again</h1>}
+         { startGame && <h1 style={{margin : 0, padding : 0}} >Score: {score}</h1>}
      
      <div className={styles.board}>
          {board.map(eachRow=>{
@@ -100,8 +111,6 @@ const Board=()=>{
                     {eachRow.map(eachCell=>{
                         return(
                             <div className={`${styles.cell} ${snakeCells.includes(eachCell) ? styles.snake : ""} ${eachCell === foodCell ? styles.food : ""}`}/>
-                                
-                            
                         )
                     })}
                 </div>
