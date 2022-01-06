@@ -16,7 +16,7 @@
 .food{
     background-color: brown;
 }
-.mobileBtn{
+/* .mobileBtn{
     margin-top: 1rem;
     display: flex;
     justify-content: center;
@@ -38,12 +38,12 @@
 }
 .btnUp,.btnLeft,.btnDown,.btnRight{
     padding: .6rem .9rem;
-}
-@media (min-width : 700px) {
+} */
+/* @media (min-width : 700px) {
     .mobileBtn{
         display: none;
     }
-}
+} */
 
 @media (max-width : 550px) {
     .cell{
@@ -56,5 +56,16 @@
     .board{
         border: none;
     }
+    
+}
+@media (max-width : 350px) {
+    .cell{
+        width: 13px;
+        height: 13px;
+    }
+    .row{
+        height: 13px;
+    }
+    
     
 }

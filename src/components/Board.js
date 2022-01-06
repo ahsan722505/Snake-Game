@@ -11,20 +11,36 @@ const Board=()=>{
     const [startGame,setStartGame]=useState(false);
     const [endGame,setEndGame]=useState(false);
     const [score,setScore]=useState(0);
-    (function () {
+    const [delay,setDelay]=useState(100);
+    
+        var elem = document.documentElement;
+
+/* View in fullscreen */
+function openFullscreen() {
+  if (elem.requestFullscreen) {
+    elem.requestFullscreen();
+  } else if (elem.webkitRequestFullscreen) { /* Safari */
+    elem.webkitRequestFullscreen();
+  } else if (elem.msRequestFullscreen) { /* IE11 */
+    elem.msRequestFullscreen();
+  }
+}
+    
+    useEffect(()=>{
         // checking if player has lose
         if(!startGame) return;
         if(endGame) return;
         let tempCells=[...snakeCells];
         let head=tempCells.pop();
         if(tempCells.find(each=> each === head)) setEndGame(true);
-      })();
-    (function () {
+    },[snakeCells,endGame,startGame]);
+    useEffect(()=>{
         if(endGame) return;
         if(!startGame) return;
         // checking if snake has consumed food
         if(snakeCells.slice(-1)[0] === foodCell){
             // food was consumed
+            setDelay(state=>state-1);
             setScore(state=>state+1);
             setFoodCell(null);
             // spreading tail
@@ -33,7 +49,7 @@ const Board=()=>{
             tempCells.unshift(GetTail(firstElement,direction));
             setSnakeCells(tempCells);
         }
-      })();
+    },[snakeCells,startGame,endGame,foodCell]);
     const HandleKeydown=(e)=>{
         if(endGame) return;
         switch (e.key) {
@@ -69,6 +85,30 @@ const Board=()=>{
         }
 
     },[HandleKeydown]);
+    const SwipeLeft=()=>{
+        HandleKeydown({key : "ArrowLeft"})
+    }
+    const SwipeRight=()=>{
+        HandleKeydown({key : "ArrowRight"})
+    }
+    const SwipeUp=()=>{
+        HandleKeydown({key : "ArrowUp"})
+    }
+    const SwipeDown=()=>{
+        HandleKeydown({key : "ArrowDown"})
+    }
+    useEffect(()=>{
+        document.addEventListener('swiped-left',SwipeLeft);
+        document.addEventListener('swiped-right',SwipeRight);
+        document.addEventListener('swiped-up',SwipeUp);
+        document.addEventListener('swiped-down',SwipeDown);
+        return ()=>{
+            document.removeEventListener('swiped-left',SwipeLeft);
+            document.removeEventListener('swiped-right',SwipeRight);
+            document.removeEventListener('swiped-up',SwipeUp);
+            document.removeEventListener('swiped-down',SwipeDown);
+        }
+    },[SwipeLeft,SwipeRight,SwipeUp,SwipeDown]);
 
     const SnakeFlow=()=>{
         let tempCells=[...snakeCells];
@@ -81,7 +121,7 @@ const Board=()=>{
         if(endGame) return;
         if(!startGame) return;
         SnakeFlow();
-    },100)
+    },delay)
     const GenerateFood=()=>{
         if(foodCell) return;
         let food;
@@ -95,11 +135,13 @@ const Board=()=>{
         if(endGame) return;
         if(!startGame) return;
         GenerateFood();
-    },4000);
+    },2000);
 
  return(
      <>
-         { !startGame && <button style={{marginBottom : "1rem"}} onClick={()=> setStartGame(true)}>Start Game</button>}
+         { !startGame && <button style={{marginBottom : "1rem"}} onClick={()=> {setStartGame(true)
+            openFullscreen()
+        }}>Start Game</button>}
          {endGame && <h1 style={{margin : 0, padding : 0 , textAlign : "center"}}>You lose! Reload to play again</h1>}
          { startGame && <h1 style={{margin : 0, padding : 0}} >Score: {score}</h1>}
      
@@ -117,7 +159,7 @@ const Board=()=>{
          })}
 
      </div>
-     <div className={styles.mobileBtn}>
+     {/* <div className={styles.mobileBtn}>
          <button className={styles.btnUp} onClick={()=>HandleKeydown({key : "ArrowUp"})}><i className="fas fa-arrow-up"></i></button>
          <div className={styles.btnGroup}>
             <button className={styles.btnLeft} onClick={()=>HandleKeydown({key : "ArrowLeft"})}><i className="fas fa-arrow-left"></i></button>
@@ -125,7 +167,7 @@ const Board=()=>{
 
          </div>
          <button onClick={()=>HandleKeydown({key : "ArrowDown"})} className={styles.btnDown}><i className="fas fa-arrow-down"></i></button>
-     </div>
+     </div> */}
      </>
  )
 }
