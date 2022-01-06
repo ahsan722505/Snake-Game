@@ -1,5 +1,5 @@
 import styles from "./Board.module.css";
-import { useState,useEffect } from "react";
+import { useState,useEffect,useCallback } from "react";
 import { CreateBoard } from "../helpers/util";
 import { GetHead,generateRandom,useInterval,GetTail } from "../helpers/util";
 const BOARD_SIZE=20;
@@ -49,8 +49,8 @@ function openFullscreen() {
             tempCells.unshift(GetTail(firstElement,direction));
             setSnakeCells(tempCells);
         }
-    },[snakeCells,startGame,endGame,foodCell]);
-    const HandleKeydown=(e)=>{
+    },[snakeCells,startGame,endGame,foodCell,direction]);
+    const HandleKeydown=useCallback((e)=>{
         if(endGame) return;
         switch (e.key) {
             case "ArrowUp":
@@ -75,7 +75,7 @@ function openFullscreen() {
                 break;
             
         }
-    }
+    },[endGame,startGame,direction]);
 
 
     useEffect(()=>{
@@ -85,18 +85,19 @@ function openFullscreen() {
         }
 
     },[HandleKeydown]);
-    const SwipeLeft=()=>{
+    
+    const SwipeLeft=useCallback(()=>{
         HandleKeydown({key : "ArrowLeft"})
-    }
-    const SwipeRight=()=>{
+    },[HandleKeydown]);
+    const SwipeRight=useCallback(()=>{
         HandleKeydown({key : "ArrowRight"})
-    }
-    const SwipeUp=()=>{
+    },[HandleKeydown]);
+    const SwipeUp=useCallback(()=>{
         HandleKeydown({key : "ArrowUp"})
-    }
-    const SwipeDown=()=>{
+    },[HandleKeydown])
+    const SwipeDown=useCallback(()=>{
         HandleKeydown({key : "ArrowDown"})
-    }
+    },[HandleKeydown])
     useEffect(()=>{
         document.addEventListener('swiped-left',SwipeLeft);
         document.addEventListener('swiped-right',SwipeRight);
@@ -136,16 +137,24 @@ function openFullscreen() {
         if(!startGame) return;
         GenerateFood();
     },2000);
+    const restartGame=()=>{
+        setSnakeCells([44,45,46]);
+        setFoodCell(288);
+        setDirection("Right");
+        setScore(0);
+        setDelay(100);
+        setEndGame(false);
+    }
 
  return(
      <>
          { !startGame && <button style={{marginBottom : "1rem"}} onClick={()=> {setStartGame(true)
             openFullscreen()
         }}>Start Game</button>}
-         {endGame && <h1 style={{margin : 0, padding : 0 , textAlign : "center"}}>You lose! Reload to play again</h1>}
+        {endGame && <button onClick={restartGame}>Play Again</button>}
          { startGame && <h1 style={{margin : 0, padding : 0}} >Score: {score}</h1>}
      
-     <div className={styles.board}>
+     <div className={styles.board} style={{border : endGame ? "3px solid red" : ""}}>
          {board.map((eachRow,rowInd)=>{
              return(
                 <div key={rowInd} className={styles.row}>
